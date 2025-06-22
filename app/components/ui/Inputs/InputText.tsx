@@ -7,8 +7,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
-import { Control, FieldValues } from "react-hook-form";
+import { HTMLInputTypeAttribute } from "react";
+import { Control } from "react-hook-form";
 
 interface InputTextProps {
   control: Control<any, any, any>;
@@ -33,7 +33,12 @@ const InputText = ({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input type={typeField} placeholder={placeholder} {...field} />
+            <Input
+              type={typeField}
+              placeholder={placeholder}
+              {...field}
+              value={field.value || ""}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

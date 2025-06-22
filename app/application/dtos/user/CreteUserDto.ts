@@ -8,4 +8,5 @@ export type CreateUserDto = {
   phone: string;
   email: string;
   password: string;
+  permissions?: string[];
 };

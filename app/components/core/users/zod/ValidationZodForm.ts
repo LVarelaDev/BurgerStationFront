@@ -29,10 +29,7 @@ export const CreateUserSchema = z
         "El documento solo puede contener letras y números"
       ),
 
-    address: z
-      .string()
-      .min(5, "La dirección debe tener al menos 5 caracteres")
-      .max(200, "La dirección no puede exceder los 200 caracteres"),
+    address: z.string().min(5, "La dirección debe tener al menos 5 caracteres"),
 
     phone: z
       .string()
