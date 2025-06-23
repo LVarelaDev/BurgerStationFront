@@ -38,15 +38,15 @@ const InputSelect = ({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className="w-full">
           <FormLabel>{label}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
-            <SelectContent>
+            <SelectContent className="w-full">
               {dataList.map((item) => (
                 <SelectItem key={item[itemValue]} value={item[itemValue]}>
                   {item[itemDisplay]}

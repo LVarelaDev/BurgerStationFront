@@ -1,4 +1,4 @@
-import { DocumentType } from "@/domain/entities/User";
+import { DocumentType } from "@/domain/entities/auth/User";
 
 export type CreateUserDto = {
   name: string;
@@ -8,5 +8,4 @@ export type CreateUserDto = {
   phone: string;
   email: string;
   password: string;
-  permissions?: string[];
 };

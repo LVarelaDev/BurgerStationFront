@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
-import NavigationMenuComponent from "../../ui/layout/NavigationMenu";
 import Logo from "../../../public/burgerlogo.svg";
-import { Button } from "@/components/ui/button";
+import NavigationMenuComponent from "../../ui/layout/NavigationMenu";
+import { useSession } from "next-auth/react";
+import ProfileMenu from "./ProfileMenu";
 
 const Navbar = () => {
+  const { data } = useSession();
   return (
     <div className="flex justify-between items-center w-full px-20 bg-white shadow">
       <div className="flex items-center space-x-2">
@@ -16,8 +20,7 @@ const Navbar = () => {
       </div>
       <NavigationMenuComponent />
       <div className="flex items-center space-x-4">
-        <Button>Sign In</Button>
-        <Button variant={"outline"}>Sign Up</Button>
+        <ProfileMenu name={data?.user.name ?? ""} />
       </div>
     </div>
   );
