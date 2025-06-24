@@ -4,18 +4,11 @@ import ButtonMenuItem from "./partials/ButtonMenuItem";
 
 const NavigationMenuComponent = () => {
   const [active, setActive] = useState<string | null>(null);
-  const rol = "admin";
 
-  const INIT_MENU = [
-    { name: "Inicio", path: "/" },
-    {
-      name: "Categorias",
-      path: "/categories",
-    },
-  ];
+  const INIT_MENU = [{ name: "Inicio", path: "/" }];
 
   return (
-    <ul className="flex gap-4 justify-between items-center p-4">
+    <ul className="flex lg:flex-row flex-col lg:gap-4 lg:justify-between lg:items-center lg:p-4">
       {INIT_MENU.map((item, index) => (
         <ButtonMenuItem
           key={index}
