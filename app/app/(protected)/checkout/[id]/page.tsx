@@ -1,7 +1,7 @@
 "use client";
 import CheckoutContainer from "@/components/core/check-out/CheckoutContainer";
 import Error from "next/error";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const Page = ({ params }: { params: Promise<{ id: string }> }) => {
   const [id, setId] = useState<number | null>(null);

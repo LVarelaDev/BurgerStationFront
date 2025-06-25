@@ -1,7 +1,7 @@
+import { AdditionalsItems } from "@/components/core/check-out/CheckoutContainer";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 import { apiClient } from "@/Infrastructure/axios/AxiosClient";
 import { BurgersEndpointEnum } from "./BurgersEndpointEnum";
-import { BurgerResponse } from "@/domain/entities/order/OrderDto";
-import { AdditionalsItems } from "@/components/core/check-out/CheckoutContainer";
 
 export interface GetBurgerByIdDto {
   burger: BurgerResponse;

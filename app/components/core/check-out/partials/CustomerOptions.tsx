@@ -9,9 +9,9 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
-import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface CustomerOptionsProps {
   form: UseFormReturn<FormValues>;
@@ -45,7 +45,7 @@ const CustomerOptions = ({
         [
           ...currentAdditions,
           {
-            id: Number(addition.id),
+            id: addition.id.toString(),
             name: addition.name,
             price: addition.price,
           },
@@ -57,7 +57,7 @@ const CustomerOptions = ({
     } else {
       setValue(
         name,
-        currentAdditions.filter((item) => item.id !== Number(addition.id)),
+        currentAdditions.filter((item) => item.id !== addition.id),
         { shouldValidate: true }
       );
     }
@@ -85,24 +85,27 @@ const CustomerOptions = ({
             <FormField
               name={name}
               control={control}
-              render={({ field }) => (
+              render={() => (
                 <Checkbox
-                  id={addition.id}
+                  id={addition.id.toString()}
                   checked={selectedAdditions.some(
-                    (item: any) => item.id === addition.id
+                    (item: AdditionalsItems) => item.id === addition.id
                   )}
                   onCheckedChange={(checked) =>
                     handleAdditionChange(addition, checked as boolean)
                   }
                   disabled={
                     !selectedAdditions.some(
-                      (item: any) => item.id === addition.id
+                      (item: AdditionalsItems) => item.id === addition.id
                     ) && selectedAdditions.length >= maxSelections
                   }
                 />
               )}
             />
-            <Label htmlFor={addition.id} className="flex-1 cursor-pointer">
+            <Label
+              htmlFor={addition.id.toString()}
+              className="flex-1 cursor-pointer"
+            >
               {addition.name}
             </Label>
             <span className="font-medium">+${addition.price.toFixed(2)}</span>

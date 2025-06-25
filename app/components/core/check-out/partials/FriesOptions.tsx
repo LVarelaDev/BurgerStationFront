@@ -6,12 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
-import { FormValues } from "@/domain/constants/schemas/OrderFormSchema"; // ✅ Importación correcta
 
 interface FriesOptionsProps {
   form: UseFormReturn<FormValues>;

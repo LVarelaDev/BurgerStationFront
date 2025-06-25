@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const additionSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   price: z.number(),
 });

@@ -1,7 +1,7 @@
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 import { UseFormReturn } from "react-hook-form";
 import QuantitySection from "./QuantitySection";
-import { BurgerResponse } from "@/domain/entities/order/OrderDto";
-import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface ProductInformationPrps {
   burger: BurgerResponse;

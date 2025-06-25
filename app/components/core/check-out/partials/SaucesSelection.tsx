@@ -40,14 +40,14 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
         name,
         [
           ...selectedSauces,
-          { id: Number(sauce.id), name: sauce.name, price: sauce.price },
+          { id: String(sauce.id), name: sauce.name, price: sauce.price },
         ],
         { shouldValidate: true }
       );
     } else {
       setValue(
         name,
-        selectedSauces.filter((item: any) => item.id !== sauce.id),
+        selectedSauces.filter((item: AdditionalsItems) => item.id !== sauce.id),
         { shouldValidate: true }
       );
     }
@@ -74,7 +74,7 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
       <CardContent className="space-y-3">
         {sauces.map((sauce) => {
           const isChecked = selectedSauces.some(
-            (item: any) => item.id === sauce.id
+            (item: AdditionalsItems) => item.id === sauce.id
           );
           const isDisabled = !isChecked && selectedSauces.length >= MAX_SAUCES;
 
@@ -85,7 +85,7 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
                 control={control}
                 render={() => (
                   <Checkbox
-                    id={sauce.id}
+                    id={sauce.id.toString()}
                     checked={isChecked}
                     onCheckedChange={(checked) =>
                       handleSauceChange(sauce, checked as boolean)
@@ -94,7 +94,10 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
                   />
                 )}
               />
-              <Label htmlFor={sauce.id} className="flex-1 cursor-pointer">
+              <Label
+                htmlFor={String(sauce.id)}
+                className="flex-1 cursor-pointer"
+              >
                 {sauce.name}
               </Label>
               <span className="font-medium">

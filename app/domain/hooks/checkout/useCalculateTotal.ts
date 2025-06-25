@@ -1,7 +1,7 @@
 import { AdditionalsItems } from "@/components/core/check-out/CheckoutContainer";
 import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
-import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 import { OrderItemCustomization } from "@/domain/entities/checkout/CreateOrderDto";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 
 export const useCalculateTotal = ({
   fries,

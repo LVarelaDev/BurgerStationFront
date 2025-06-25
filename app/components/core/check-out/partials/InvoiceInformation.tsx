@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
-import React from "react";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 
 interface InvoiceInformationProps {
-  burger: any;
-  calculateTotal: (burger: any) => number;
+  burger: BurgerResponse;
+  calculateTotal: (burger: BurgerResponse) => number;
 }
 
 const InvoiceInformation = ({
