@@ -15,19 +15,26 @@ import {
 import { Control, FieldValues, Path } from "react-hook-form";
 
 interface InputSelectProps<
-  T extends FieldValues,
-  K extends Record<string, any>
+  TFieldValues extends FieldValues,
+  TItem extends object,
+  TDisplayKey extends keyof TItem,
+  TValueKey extends keyof TItem
 > {
-  dataList: K[];
-  itemDisplay: keyof K;
-  itemValue: keyof K;
-  control: Control<T>;
-  name: Path<T>;
+  dataList: TItem[];
+  itemDisplay: TDisplayKey;
+  itemValue: TValueKey;
+  control: Control<TFieldValues>;
+  name: Path<TFieldValues>;
   label: string;
   placeholder?: string;
 }
 
-const InputSelect = <T extends FieldValues, K extends Record<string, any>>({
+const InputSelect = <
+  TFieldValues extends FieldValues,
+  TItem extends object,
+  TDisplayKey extends keyof TItem,
+  TValueKey extends keyof TItem
+>({
   control,
   label,
   name,
@@ -35,7 +42,7 @@ const InputSelect = <T extends FieldValues, K extends Record<string, any>>({
   dataList,
   itemDisplay,
   itemValue,
-}: InputSelectProps<T, K>) => {
+}: InputSelectProps<TFieldValues, TItem, TDisplayKey, TValueKey>) => {
   return (
     <FormField
       control={control}
@@ -51,8 +58,11 @@ const InputSelect = <T extends FieldValues, K extends Record<string, any>>({
             </FormControl>
             <SelectContent className="w-full">
               {dataList.map((item) => (
-                <SelectItem key={item[itemValue]} value={item[itemValue]}>
-                  {item[itemDisplay]}
+                <SelectItem
+                  key={String(item[itemValue])}
+                  value={String(item[itemValue])}
+                >
+                  {String(item[itemDisplay])}
                 </SelectItem>
               ))}
             </SelectContent>
