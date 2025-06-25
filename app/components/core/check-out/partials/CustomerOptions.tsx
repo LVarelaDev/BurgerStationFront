@@ -45,7 +45,7 @@ const CustomerOptions = ({
         [
           ...currentAdditions,
           {
-            id: addition.id.toString(),
+            id: addition.id,
             name: addition.name,
             price: addition.price,
           },

@@ -80,8 +80,8 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
           price: data.burger.price,
           quantity: formData.quantity,
           customizations: mapToCustomizations(
-            (formData.additions ?? []).map((a) => ({ ...a, id: String(a.id) })),
-            (formData.sauces ?? []).map((s) => ({ ...s, id: String(s.id) })),
+            (formData.additions ?? []).map((a) => ({ ...a, id: a.id })),
+            (formData.sauces ?? []).map((s) => ({ ...s, id: s.id })),
             formData.fries,
             formData.drink
           ),
@@ -170,6 +170,7 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
               <InputText
                 name="customerNote"
                 control={methods.control}
+                placeholder="Escribe una nota adicional"
                 label="Nota adicional"
               />
             </div>

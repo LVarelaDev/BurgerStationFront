@@ -40,7 +40,7 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
         name,
         [
           ...selectedSauces,
-          { id: String(sauce.id), name: sauce.name, price: sauce.price },
+          { id: sauce.id, name: sauce.name, price: sauce.price },
         ],
         { shouldValidate: true }
       );
