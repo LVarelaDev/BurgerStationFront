@@ -1,25 +1,20 @@
 import React, { SetStateAction } from "react";
 import QuantitySection from "./QuantitySection";
+import { UseFormReturn } from "react-hook-form";
 
 interface ProductInformationPrps {
-  quantity: number;
-  setQuantity: (value: SetStateAction<number>) => void;
+  burger: any;
+  form: UseFormReturn<any>;
 }
 
-const ProductInformation = ({
-  quantity,
-  setQuantity,
-}: ProductInformationPrps) => {
+const ProductInformation = ({ burger, form }: ProductInformationPrps) => {
   return (
     <div>
-      <h1 className="text-3xl font-bold">Hamburguesa Artesanal</h1>
-      <p className="text-gray-600 mt-2">
-        Deliciosa hamburguesa artesanal con carne 100% res, lechuga fresca,
-        tomate y cebolla en pan brioche tostado.
-      </p>
+      <h1 className="text-3xl font-bold">{burger.name}</h1>
+      <p className="text-gray-600 mt-2">{burger.description}</p>
       <div className="flex justify-between items-center text-2xl font-bold text-primary mt-4">
-        <span>$11 USD</span>
-        <QuantitySection quantity={quantity} setQuantity={setQuantity} />
+        <span>${burger.price} USD</span>
+        <QuantitySection form={form} />
       </div>
     </div>
   );

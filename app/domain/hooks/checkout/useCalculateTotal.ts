@@ -1,60 +1,57 @@
-import {
-  additions,
-  drinks,
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
+import { OrderItemCustomization } from "@/domain/entities/checkout/CreateOrderDto";
+
+interface Item {
+  id: string;
+  name: string;
+  price: number;
+}
+export const useCalculateTotal = ({
   fries,
-  sauces,
-} from "@/components/core/check-out/CheckoutContainer";
-import { useState } from "react";
+  drinks,
+}: {
+  fries: Item[];
+  drinks: Item[];
+}) => {
+  const mapToCustomizations = (
+    additions: any[],
+    sauces: any[],
+    fries: any | null,
+    drink: any | null
+  ): OrderItemCustomization[] => {
+    const all: any[] = [
+      ...(additions || []),
+      ...(sauces || []),
+      ...(fries ? [fries] : []),
+      ...(drink ? [drink] : []),
+    ];
 
-export const useCalculateTotal = () => {
-  const basePrice = 8.99;
-
-  const [quantity, setQuantity] = useState(1);
-  const [selectedSauces, setSelectedSauces] = useState<string[]>([]);
-  const [selectedFries, setSelectedFries] = useState("");
-  const [selectedDrink, setSelectedDrink] = useState("");
-  const [selectedAdditions, setSelectedAdditions] = useState<string[]>([]);
-
-  const calculateTotal = () => {
-    let total = basePrice;
-
-    selectedAdditions.forEach((additionId) => {
-      const addition = additions.find((a) => a.id === additionId);
-      if (addition) total += addition.price;
-    });
-
-    selectedSauces.forEach((sauceId) => {
-      const sauce = sauces.find((s) => s.id === sauceId);
-      if (sauce) total += sauce.price;
-    });
-
-    if (selectedFries) {
-      const fry = fries.find((f) => f.id === selectedFries);
-      if (fry) total += fry.price;
-    }
-
-    if (selectedDrink) {
-      const drink = drinks.find((d) => d.id === selectedDrink);
-      if (drink) total += drink.price;
-    }
-
-    return total * quantity;
+    return all.map((item) => ({
+      customizationOptionId: item.id,
+      price: item.price,
+    }));
   };
 
-  const isComplete = selectedFries && selectedDrink;
+  const calculateTotal = (burger: Item, formData: FormValues) => {
+    const selectedFries = fries.find((f) => f.id === formData.fries?.id);
+    const selectedDrink = drinks.find((d) => d.id === formData.drink?.id);
 
-  return {
-    isComplete,
-    calculateTotal,
-    setQuantity,
-    setSelectedAdditions,
-    setSelectedDrink,
-    setSelectedFries,
-    setSelectedSauces,
-    quantity,
-    selectedAdditions,
-    selectedDrink,
-    selectedFries,
-    selectedSauces,
+    const customizations = [
+      ...(formData.additions ?? []),
+      ...formData.sauces,
+      ...(selectedFries ? [selectedFries] : []),
+      ...(selectedDrink ? [selectedDrink] : []),
+    ];
+
+    const customizationsTotal = customizations.reduce(
+      (sum, item) => sum + (item.price || 0),
+      0
+    );
+
+    const burgerTotal = burger.price * formData.quantity;
+
+    return +(burgerTotal + customizationsTotal).toFixed(2);
   };
+
+  return { calculateTotal, mapToCustomizations };
 };

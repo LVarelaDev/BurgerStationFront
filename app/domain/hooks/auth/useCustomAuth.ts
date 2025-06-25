@@ -6,8 +6,8 @@ import { toast } from "sonner";
 export const useCustomAuth = () => {
   const router = useRouter();
 
-  const register = async (newUser: CreateUserDto) => {
-    await toast.promise(createUserPOST(newUser), {
+  const register = (newUser: CreateUserDto) => {
+    toast.promise(createUserPOST(newUser), {
       loading: "Registrando usuario...",
       success: (res) => {
         router.push("/login");

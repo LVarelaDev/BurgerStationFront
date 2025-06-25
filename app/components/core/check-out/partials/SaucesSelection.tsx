@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+"use client";
 import {
   Card,
   CardContent,
@@ -8,23 +8,40 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { sauces } from "../CheckoutContainer";
 import { Label } from "@/components/ui/label";
+import { UseFormReturn, useWatch } from "react-hook-form";
+import { FormField } from "@/components/ui/form";
+import { AdditionalsItems } from "../CheckoutContainer";
 
-interface SoucesSelectionProps {
-  selectedSauces: string[];
-  setSelectedSauces: Dispatch<SetStateAction<string[]>>;
+const MAX_SAUCES = 2;
+
+interface SaucesSelectionProps {
+  form: UseFormReturn<any, any>;
+  sauces: AdditionalsItems[];
 }
 
-const SaucesSelection = ({
-  selectedSauces,
-  setSelectedSauces,
-}: SoucesSelectionProps) => {
-  const handleSauceChange = (sauceId: string, checked: boolean) => {
-    if (checked && selectedSauces.length < 2) {
-      setSelectedSauces([...selectedSauces, sauceId]);
-    } else if (!checked) {
-      setSelectedSauces(selectedSauces.filter((id) => id !== sauceId));
+const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = form;
+
+  const name = "sauces";
+  const selectedSauces = useWatch({ name, control }) || [];
+
+  const handleSauceChange = (
+    sauce: (typeof sauces)[number],
+    checked: boolean
+  ) => {
+    if (checked) {
+      setValue(name, [...selectedSauces, sauce], { shouldValidate: true });
+    } else {
+      setValue(
+        name,
+        selectedSauces.filter((item: any) => item.id !== sauce.id),
+        { shouldValidate: true }
+      );
     }
   };
 
@@ -33,31 +50,51 @@ const SaucesSelection = ({
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Selección de Salsas
-          <Badge variant="secondary">{selectedSauces.length}/2</Badge>
+          <Badge variant="secondary">
+            {selectedSauces.length}/{MAX_SAUCES}
+          </Badge>
         </CardTitle>
-        <CardDescription>Elige hasta 2 salsas</CardDescription>
+        <CardDescription>
+          Elige hasta {MAX_SAUCES} salsas
+          {errors.sauces && (
+            <span className="text-red-500 text-sm ml-2">
+              Selecciona máximo 2
+            </span>
+          )}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
-        {sauces.map((sauce) => (
-          <div key={sauce.id} className="flex items-center space-x-2">
-            <Checkbox
-              id={sauce.id}
-              checked={selectedSauces.includes(sauce.id)}
-              onCheckedChange={(checked) =>
-                handleSauceChange(sauce.id, checked as boolean)
-              }
-              disabled={
-                !selectedSauces.includes(sauce.id) && selectedSauces.length >= 2
-              }
-            />
-            <Label htmlFor={sauce.id} className="flex-1 cursor-pointer">
-              {sauce.name}
-            </Label>
-            <span className="font-medium">
-              {sauce.price === 0 ? "Gratis" : `+$${sauce.price.toFixed(2)}`}
-            </span>
-          </div>
-        ))}
+        {sauces.map((sauce) => {
+          const isChecked = selectedSauces.some(
+            (item: any) => item.id === sauce.id
+          );
+          const isDisabled = !isChecked && selectedSauces.length >= MAX_SAUCES;
+
+          return (
+            <div key={sauce.id} className="flex items-center space-x-2">
+              <FormField
+                name={name}
+                control={control}
+                render={() => (
+                  <Checkbox
+                    id={sauce.id}
+                    checked={isChecked}
+                    onCheckedChange={(checked) =>
+                      handleSauceChange(sauce, checked as boolean)
+                    }
+                    disabled={isDisabled}
+                  />
+                )}
+              />
+              <Label htmlFor={sauce.id} className="flex-1 cursor-pointer">
+                {sauce.name}
+              </Label>
+              <span className="font-medium">
+                {sauce.price === 0 ? "Gratis" : `+$${sauce.price.toFixed(2)}`}
+              </span>
+            </div>
+          );
+        })}
       </CardContent>
     </Card>
   );

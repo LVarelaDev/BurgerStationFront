@@ -8,10 +8,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  BurgersEndpointEnum,
-  getAllBurgers,
-} from "@/Infrastructure/services/burgers/getAllBurgers";
+import { BurgersEndpointEnum } from "@/Infrastructure/services/burgers/BurgersEndpointEnum";
+import { getAllBurgers } from "@/Infrastructure/services/burgers/getAllBurgers";
 import { DollarSignIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

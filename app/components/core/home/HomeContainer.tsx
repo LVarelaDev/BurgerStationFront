@@ -1,4 +1,3 @@
-"use client";
 import Banner from "./banner/Banner";
 import BurgersList from "./burgers/BurgersList";
 

@@ -1,39 +1,53 @@
-import React, { SetStateAction } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
+import { UseFormReturn } from "react-hook-form";
+import { FormField } from "@/components/ui/form";
 
-interface QuantitySectionPrps {
-  quantity: number;
-  setQuantity: (value: SetStateAction<number>) => void;
+interface QuantitySectionProps {
+  form: UseFormReturn<any>;
 }
 
-const QuantitySection = ({ quantity, setQuantity }: QuantitySectionPrps) => {
+const QuantitySection = ({ form }: QuantitySectionProps) => {
+  const name = "quantity";
+  const quantity = form.watch(name) || 1;
+
+  const handleChange = (newQuantity: number) => {
+    form.setValue(name, newQuantity, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
   return (
-    <div className="flex items-center space-x-4">
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-        disabled={quantity <= 1}
-      >
-        <Minus className="h-4 w-4" />
-      </Button>
-      <span className="text-xl font-semibold w-12 text-center">{quantity}</span>
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={() => setQuantity(quantity + 1)}
-      >
-        <Plus className="h-4 w-4" />
-      </Button>
-    </div>
+    <FormField
+      name={name}
+      control={form.control}
+      render={() => (
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleChange(Math.max(1, quantity - 1))}
+            disabled={quantity <= 1}
+            type="button"
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+          <span className="text-xl font-semibold w-12 text-center">
+            {quantity}
+          </span>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => handleChange(quantity + 1)}
+            type="button"
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+    />
   );
 };
 

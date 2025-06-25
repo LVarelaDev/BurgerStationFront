@@ -6,25 +6,55 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { additions } from "../CheckoutContainer";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import {
+  useFormContext,
+  useWatch,
+  Controller,
+  UseFormReturn,
+} from "react-hook-form";
+import { formSchema } from "@/domain/constants/schemas/OrderFormSchema";
+import { z } from "zod";
+import { FormField } from "@/components/ui/form";
+import { AdditionalsItems } from "../CheckoutContainer";
 
 interface CustomerOptionsProps {
-  setSelectedAdditions: Dispatch<SetStateAction<string[]>>;
-  selectedAdditions: string[];
+  form: UseFormReturn<any, any>;
+  maxSelections?: number;
+  additions: AdditionalsItems[];
 }
 
 const CustomerOptions = ({
-  setSelectedAdditions,
-  selectedAdditions,
+  form,
+  maxSelections = 3,
+  additions,
 }: CustomerOptionsProps) => {
-  const handleAdditionChange = (additionId: string, checked: boolean) => {
-    if (checked && selectedAdditions.length < 3) {
-      setSelectedAdditions([...selectedAdditions, additionId]);
-    } else if (!checked) {
-      setSelectedAdditions(selectedAdditions.filter((id) => id !== additionId));
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = form;
+
+  const name = "additions";
+  const selectedAdditions = useWatch({ name, control }) || [];
+
+  const handleAdditionChange = (
+    addition: (typeof additions)[number],
+    checked: boolean
+  ) => {
+    const currentAdditions = selectedAdditions as typeof additions;
+
+    if (checked) {
+      setValue(name, [...currentAdditions, addition], {
+        shouldValidate: true,
+      });
+    } else {
+      setValue(
+        name,
+        currentAdditions.filter((item) => item.id !== addition.id),
+        { shouldValidate: true }
+      );
     }
   };
 
@@ -33,23 +63,39 @@ const CustomerOptions = ({
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Opciones de Personalización
-          <Badge variant="secondary">{selectedAdditions.length}/3</Badge>
+          <Badge variant="secondary">
+            {selectedAdditions.length}/{maxSelections}
+          </Badge>
         </CardTitle>
-        <CardDescription>Selecciona hasta 3 adiciones</CardDescription>
+        <CardDescription>
+          Selecciona hasta {maxSelections} adiciones
+          {errors.additions && (
+            <span className="text-red-500 text-sm ml-2">asd</span>
+          )}
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
         {additions.map((addition) => (
           <div key={addition.id} className="flex items-center space-x-2">
-            <Checkbox
-              id={addition.id}
-              checked={selectedAdditions.includes(addition.id)}
-              onCheckedChange={(checked) =>
-                handleAdditionChange(addition.id, checked as boolean)
-              }
-              disabled={
-                !selectedAdditions.includes(addition.id) &&
-                selectedAdditions.length >= 3
-              }
+            <FormField
+              name={name}
+              control={control}
+              render={({ field }) => (
+                <Checkbox
+                  id={addition.id}
+                  checked={selectedAdditions.some(
+                    (item: any) => item.id === addition.id
+                  )}
+                  onCheckedChange={(checked) =>
+                    handleAdditionChange(addition, checked as boolean)
+                  }
+                  disabled={
+                    !selectedAdditions.some(
+                      (item: any) => item.id === addition.id
+                    ) && selectedAdditions.length >= maxSelections
+                  }
+                />
+              )}
             />
             <Label htmlFor={addition.id} className="flex-1 cursor-pointer">
               {addition.name}
