@@ -1,4 +1,3 @@
-"use client";
 import { BurgersEndpointEnum } from "@/Infrastructure/services/burgers/BurgersEndpointEnum";
 import { getBurgerById } from "@/Infrastructure/services/burgers/getBugerById";
 import { createOrder } from "@/Infrastructure/services/checkout/CreateOrderService";
