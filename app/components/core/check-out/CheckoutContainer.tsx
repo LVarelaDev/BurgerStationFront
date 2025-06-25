@@ -67,7 +67,8 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
   });
 
   const handleCreateOrder = (formData: FormValues) => {
-    const total = +calculateTotal(data.burger, formData).toFixed(2);
+    if (!data) throw new Error("complete form");
+    const total = +calculateTotal(data?.burger, formData).toFixed(2);
 
     const payload: CreateOrderRequest = {
       status: OrderStatus.PENDING,
@@ -79,8 +80,8 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
           price: data.burger.price,
           quantity: formData.quantity,
           customizations: mapToCustomizations(
-            formData.additions ?? [],
-            formData.sauces,
+            (formData.additions ?? []).map((a) => ({ ...a, id: String(a.id) })),
+            (formData.sauces ?? []).map((s) => ({ ...s, id: String(s.id) })),
             formData.fries,
             formData.drink
           ),
@@ -90,7 +91,7 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
 
     toast.promise(createOrder(payload), {
       loading: "Creando orden...",
-      success: (res) => {
+      success: () => {
         router.push("/");
         return "Orden creada correctamente";
       },
@@ -99,7 +100,6 @@ const CheckoutContainer = ({ id }: CheckoutContainerProps) => {
   };
 
   if (isLoading || !data) return <div>Loading...</div>;
-  console.log("method.getValues()", methods.getValues());
   return (
     <Card className="mx-auto p-4">
       <FormProvider {...methods}>

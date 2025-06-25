@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Minus, Plus } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface QuantitySectionProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<FormValues>;
 }
 
 const QuantitySection = ({ form }: QuantitySectionProps) => {

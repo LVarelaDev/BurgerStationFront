@@ -8,12 +8,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import bcrypt from "bcryptjs";
 import { Card } from "../ui/card";
 import InputText from "../ui/Inputs/InputText";
 import { LoginFormData, loginSchema } from "./scheme/LoginFormData";
 
-export function LoginForm() {
+const LoginForm = () => {
   const router = useRouter();
   const [error, setError] = useState("");
 
@@ -83,4 +82,5 @@ export function LoginForm() {
       </div>
     </Card>
   );
-}
+};
+export default LoginForm;

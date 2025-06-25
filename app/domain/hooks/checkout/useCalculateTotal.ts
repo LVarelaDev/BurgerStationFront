@@ -1,25 +1,22 @@
+import { AdditionalsItems } from "@/components/core/check-out/CheckoutContainer";
 import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
 import { OrderItemCustomization } from "@/domain/entities/checkout/CreateOrderDto";
 
-interface Item {
-  id: string;
-  name: string;
-  price: number;
-}
 export const useCalculateTotal = ({
   fries,
   drinks,
 }: {
-  fries: Item[];
-  drinks: Item[];
+  fries: AdditionalsItems[];
+  drinks: AdditionalsItems[];
 }) => {
   const mapToCustomizations = (
-    additions: any[],
-    sauces: any[],
-    fries: any | null,
-    drink: any | null
+    additions: AdditionalsItems[],
+    sauces: AdditionalsItems[],
+    fries: AdditionalsItems | null,
+    drink: AdditionalsItems | null
   ): OrderItemCustomization[] => {
-    const all: any[] = [
+    const all: AdditionalsItems[] = [
       ...(additions || []),
       ...(sauces || []),
       ...(fries ? [fries] : []),
@@ -27,12 +24,12 @@ export const useCalculateTotal = ({
     ];
 
     return all.map((item) => ({
-      customizationOptionId: item.id,
+      customizationOptionId: Number(item.id),
       price: item.price,
     }));
   };
 
-  const calculateTotal = (burger: Item, formData: FormValues) => {
+  const calculateTotal = (burger: BurgerResponse, formData: FormValues) => {
     const selectedFries = fries.find((f) => f.id === formData.fries?.id);
     const selectedDrink = drinks.find((d) => d.id === formData.drink?.id);
 

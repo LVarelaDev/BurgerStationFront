@@ -3,14 +3,12 @@
 import { useCustomAuth } from "@/domain/hooks/auth/useCustomAuth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  CreateUserDto,
-  CreateUserSchema,
-} from "../core/users/zod/ValidationZodForm";
+
 import { Button } from "../ui/button";
 import { Form } from "../ui/form";
 import InputSelect from "../ui/Inputs/InputSelect";
 import InputText from "../ui/Inputs/InputText";
+import { CreateUserDto, CreateUserSchema } from "./scheme/RegisterFomData";
 
 const options = [
   { displayValue: "Cédula de Ciudadanía", value: "CC" },

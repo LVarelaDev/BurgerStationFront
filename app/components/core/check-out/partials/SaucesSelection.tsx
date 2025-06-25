@@ -1,4 +1,5 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -6,17 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { UseFormReturn, useWatch } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
+import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
 
 const MAX_SAUCES = 2;
 
 interface SaucesSelectionProps {
-  form: UseFormReturn<any, any>;
+  form: UseFormReturn<FormValues>;
   sauces: AdditionalsItems[];
 }
 
@@ -35,7 +36,14 @@ const SaucesSelection = ({ form, sauces }: SaucesSelectionProps) => {
     checked: boolean
   ) => {
     if (checked) {
-      setValue(name, [...selectedSauces, sauce], { shouldValidate: true });
+      setValue(
+        name,
+        [
+          ...selectedSauces,
+          { id: Number(sauce.id), name: sauce.name, price: sauce.price },
+        ],
+        { shouldValidate: true }
+      );
     } else {
       setValue(
         name,

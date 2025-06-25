@@ -11,15 +11,20 @@ import { Label } from "@/components/ui/label";
 import { FormField } from "@/components/ui/form";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface DrinksOptionsProps {
-  form: UseFormReturn<any, any>;
+  form: UseFormReturn<FormValues>;
   drinks: AdditionalsItems[];
 }
 
 const DrinksOptions = ({ form, drinks }: DrinksOptionsProps) => {
-  const name = "drink";
-  const selectedDrink = useWatch({ name, control: form.control });
+  const name: keyof FormValues = "drink";
+
+  const selectedDrink = useWatch({
+    name,
+    control: form.control,
+  }) as AdditionalsItems | undefined;
 
   const handleDrinkChange = (id: string) => {
     const drink = drinks.find((d) => d.id === id);

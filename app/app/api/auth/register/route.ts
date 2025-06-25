@@ -23,7 +23,7 @@ export const POST = async (request: Request) => {
 
     const data = await response.json();
     return NextResponse.json(data);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { message: "Error interno del servidor" },
       { status: 500 }

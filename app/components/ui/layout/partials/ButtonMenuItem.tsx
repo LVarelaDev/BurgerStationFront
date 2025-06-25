@@ -1,21 +1,20 @@
 import Link from "next/link";
-import React from "react";
 import { Button } from "../../button";
 
-interface ButtonMenuItemProps {
+interface ButtonMenuItemProps<T extends { name: string; path: string }> {
   index: number;
-  item: any;
+  item: T;
   active: string | null;
   setActive: (name: string) => void;
 }
 
-const ButtonMenuItem = ({
+const ButtonMenuItem = <T extends { name: string; path: string }>({
   active,
   index,
   item,
   setActive,
-}: ButtonMenuItemProps) => {
-  const resolverClassActive = "bg-gray-200 ";
+}: ButtonMenuItemProps<T>) => {
+  const resolverClassActive = "bg-gray-200";
 
   return (
     <Button

@@ -7,20 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import {
-  useFormContext,
-  useWatch,
-  Controller,
-  UseFormReturn,
-} from "react-hook-form";
-import { formSchema } from "@/domain/constants/schemas/OrderFormSchema";
-import { z } from "zod";
 import { FormField } from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface CustomerOptionsProps {
-  form: UseFormReturn<any, any>;
+  form: UseFormReturn<FormValues>;
   maxSelections?: number;
   additions: AdditionalsItems[];
 }
@@ -43,16 +37,27 @@ const CustomerOptions = ({
     addition: (typeof additions)[number],
     checked: boolean
   ) => {
-    const currentAdditions = selectedAdditions as typeof additions;
+    const currentAdditions = selectedAdditions;
 
     if (checked) {
-      setValue(name, [...currentAdditions, addition], {
-        shouldValidate: true,
-      });
+      setValue(
+        name,
+        [
+          ...currentAdditions,
+          {
+            id: Number(addition.id),
+            name: addition.name,
+            price: addition.price,
+          },
+        ],
+        {
+          shouldValidate: true,
+        }
+      );
     } else {
       setValue(
         name,
-        currentAdditions.filter((item) => item.id !== addition.id),
+        currentAdditions.filter((item) => item.id !== Number(addition.id)),
         { shouldValidate: true }
       );
     }

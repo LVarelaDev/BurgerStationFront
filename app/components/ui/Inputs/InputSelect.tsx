@@ -12,19 +12,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Control } from "react-hook-form";
+import { Control, FieldValues, Path } from "react-hook-form";
 
-interface InputTextProps {
-  dataList: any[];
-  itemDisplay: string;
-  itemValue: string;
-  control: Control<any, any, any>;
-  name: string;
+interface InputSelectProps<
+  T extends FieldValues,
+  K extends Record<string, any>
+> {
+  dataList: K[];
+  itemDisplay: keyof K;
+  itemValue: keyof K;
+  control: Control<T>;
+  name: Path<T>;
   label: string;
   placeholder?: string;
 }
 
-const InputSelect = ({
+const InputSelect = <T extends FieldValues, K extends Record<string, any>>({
   control,
   label,
   name,
@@ -32,7 +35,7 @@ const InputSelect = ({
   dataList,
   itemDisplay,
   itemValue,
-}: InputTextProps) => {
+}: InputSelectProps<T, K>) => {
   return (
     <FormField
       control={control}

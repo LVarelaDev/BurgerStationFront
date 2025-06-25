@@ -11,15 +11,20 @@ import { Label } from "@/components/ui/label";
 import { FormField } from "@/components/ui/form";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { AdditionalsItems } from "../CheckoutContainer";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema"; // ✅ Importación correcta
 
 interface FriesOptionsProps {
-  form: UseFormReturn<any, any>;
+  form: UseFormReturn<FormValues>;
   fries: AdditionalsItems[];
 }
 
 const FriesOptions = ({ form, fries }: FriesOptionsProps) => {
-  const name = "fries";
-  const selectedFry = useWatch({ name, control: form.control });
+  const name: keyof FormValues = "fries";
+
+  const selectedFry = useWatch({
+    name,
+    control: form.control,
+  }) as AdditionalsItems | undefined;
 
   const handleFryChange = (id: string) => {
     const fry = fries.find((f) => f.id === id);

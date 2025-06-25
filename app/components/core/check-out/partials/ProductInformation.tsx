@@ -1,10 +1,11 @@
-import React, { SetStateAction } from "react";
-import QuantitySection from "./QuantitySection";
 import { UseFormReturn } from "react-hook-form";
+import QuantitySection from "./QuantitySection";
+import { BurgerResponse } from "@/domain/entities/order/OrderDto";
+import { FormValues } from "@/domain/constants/schemas/OrderFormSchema";
 
 interface ProductInformationPrps {
-  burger: any;
-  form: UseFormReturn<any>;
+  burger: BurgerResponse;
+  form: UseFormReturn<FormValues>;
 }
 
 const ProductInformation = ({ burger, form }: ProductInformationPrps) => {
